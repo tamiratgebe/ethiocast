@@ -4,16 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EthioCast - Local Weather Predictor</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8px);
+            width: 350px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+        .search-box button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #ff7f50;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-box button:hover {
+            background: #ff5722;
+        }
+        .weather-card {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+        .temp-box {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .details {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <header>
             <h1>EthioCast 🌦️</h1>
-            <p>Real-time weather tracking and local forecasting</p>
+            <p>Real-time weather tracking</p>
         </header>
 
         <div class="search-box">
@@ -29,11 +109,36 @@
             <p id="description">--</p>
             <div class="details">
                 <p>Humidity: <span id="humidity">--</span>%</p>
-                <p>Wind Speed: <span id="wind">--</span> km/h</p>
+                <p>Wind: <span id="wind">--</span> km/h</p>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        const apiKey = "ef21aec4dea29adc9b2ab993a5dbfed4"; // Replace with your OpenWeatherMap key
+
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            if (!city) return;
+
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("City not found");
+                const data = await response.json();
+
+                document.getElementById('cityName').innerText = `${data.name}, ${data.sys.country}`;
+                document.getElementById('temperature').innerText = Math.round(data.main.temp);
+                document.getElementById('description').innerText = data.weather[0].description;
+                document.getElementById('humidity').innerText = data.main.humidity;
+                document.getElementById('wind').innerText = data.wind.speed;
+
+                document.getElementById('weatherResult').classList.remove('hidden');
+            } catch (error) {
+                alert("Could not fetch weather data. Check your API key or city name.");
+            }
+        }
+    </script>
 </body>
 </html>
