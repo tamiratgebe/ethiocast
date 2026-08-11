@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthioCast - Local Weather Predictor</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>EthioCast 🌦️</h1>
+            <p>Real-time weather tracking and local forecasting</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city (e.g., Addis Ababa)">
+            <button onclick="getWeather()">Search</button>
+        </div>
+
+        <div id="weatherResult" class="weather-card hidden">
+            <h2 id="cityName">--</h2>
+            <div class="temp-box">
+                <span id="temperature">--</span>°C
+            </div>
+            <p id="description">--</p>
+            <div class="details">
+                <p>Humidity: <span id="humidity">--</span>%</p>
+                <p>Wind Speed: <span id="wind">--</span> km/h</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
